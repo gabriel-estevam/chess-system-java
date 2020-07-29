@@ -1,5 +1,5 @@
 package boardgame;
-
+//Classe que representa a posição de uma peça dentro do tabuleiro, seria a coodenada da peça
 public class Position 
 {
 	private int row;

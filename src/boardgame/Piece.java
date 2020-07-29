@@ -1,5 +1,6 @@
 package boardgame;
 
+//Classe Peça de xadrez comum
 public class Piece 
 {
 	protected Position position;

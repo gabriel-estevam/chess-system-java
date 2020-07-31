@@ -33,13 +33,27 @@ public class ChessMatch
 		}
 		return mat;
 	}
-	
+	private void placeNewPiece(char column, int row, ChessPiece piece)
+	{
+		//Aqui temos uma operação de inserção de uma nova peça de xadrez no tabuleiro
+		board.placePiece(piece, new ChessPosition(column,row).toPosition());
+	}
 	private void initialSetup()
 	{
 		//Função para inicializar uma partida de xadrez
-		//board.placePiece(new Rook(board,Color.WHITE), new Position(9,1)); posição que não existe
-		board.placePiece(new King(board,Color.BLACK), new Position(0,4));
-		//board.placePiece(new Rook(board,Color.WHITE), new Position(2,1));Posição que ja esta sendo usada
-		board.placePiece(new Rook(board,Color.WHITE), new Position(2,1));
+		
+		/*Esse seria o jeito certo de inserir uma peça no tabuleiro, pois se observarmos o
+		 * tabuleiro ele tem duas coordenas que mostra o exato luga da peça
+		 * a coordenada 1 a 8 - lateral esquerda;
+		 * a coordenada 'a' a 'h' que esta na parte inferior do tabuleiro.
+		 * Desse jeito fica mais facil de entender a joga, e faz mais sentido para essa camada chess
+		 * Oberserve o codigo anterior: 
+		 * board.placePiece(new Rook(board,Color.WHITE), new Position(2,1)); - nesse codigo temos teriamos que
+		 * instanciar uma peça de xadrez e instanciar uma posição ja informando o local sem usar as coordenadas do tabuleiro
+		 * errado não esta, poderia ser tambem*/
+		
+		placeNewPiece('b', 6, new Rook(board,Color.WHITE));
+		placeNewPiece('e', 8, new King(board,Color.BLACK));
+		placeNewPiece('e', 1, new King(board,Color.WHITE));
 	}
 }

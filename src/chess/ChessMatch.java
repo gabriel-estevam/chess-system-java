@@ -1,6 +1,7 @@
 package chess;
 
 import boardgame.Board;
+import boardgame.Piece;
 import boardgame.Position;
 import chess.pieces.King;
 import chess.pieces.Rook;
@@ -20,7 +21,6 @@ public class ChessMatch
 	
 	public ChessPiece[][] getPieces() 
 	{
-
 		ChessPiece[][] mat = new ChessPiece[board.getRows()][board.getColumns()];
 
 		for (int i=0; i<board.getRows(); i++) 
@@ -33,6 +33,42 @@ public class ChessMatch
 		}
 		return mat;
 	}
+	
+	public ChessPiece performChessMove(ChessPosition sourcePosition, ChessPosition targetPosition) 
+	{
+		//Operação para mover uma peça, nesse momento não é a o metodo de captura de peça
+		Position source = sourcePosition.toPosition();
+		Position target = targetPosition.toPosition();
+		
+		validateSourcePosition(source); //Validação da posição de origem
+		
+		Piece capturedPiece = makeMove(source, target);
+		return (ChessPiece)capturedPiece;
+	}
+	
+	private Piece makeMove(Position source, Position target)
+	{
+		//Operação para fazer um movimento de peça
+		/*Para fazer o movimento de uma peça ela antes de mudar de lugar de que sair da sua origem
+		  Que é o que acontece com a linha abaixo*/
+		Piece p = board.removePiece(source); //Remove a peça de origem
+		/*Em seguida, caso tenha uma peça na posição de destino, ele remove essa peça tambem, que é o
+		 * que acontece com a linha abaixo*/
+		Piece capturedPiece = board.removePiece(target); //Remove a peça que estiver na posição de origem
+		/*Por fim a peça de origem chega na de destino*/
+		board.placePiece(p, target);
+		return capturedPiece;
+	}
+	private void validateSourcePosition(Position position)
+	{
+		//Operação para validar uma posição de origem
+		//Caso não tenha peça na posição lança a exception abaixo
+		if(!board.thereIsAPiece(position))
+		{
+			throw new ChessException("There is no place on source position");
+		}
+	}
+	
 	private void placeNewPiece(char column, int row, ChessPiece piece)
 	{
 		//Aqui temos uma operação de inserção de uma nova peça de xadrez no tabuleiro

@@ -68,6 +68,31 @@ public class Board
 		piece.position = position;
 	}
 	
+	public Piece removePiece(Position position)
+	{
+		//Metodo para remover uma peça
+		
+		//Programação defensiva
+		if(!positionExists(position))
+		{
+			throw new BoardException("There is already a piece on position " + position);
+		}
+		//Antes de remover vai testar se a peça passada na posição existe, caso não, retorna null
+		if(piece(position) == null)
+		{
+			return null;
+		}
+		//Removendo uma peça
+		/*Criado uma variavel auxiliar do tipo piece, essa auxliar na posição
+		 * informada recebe nulo, em seguida na posição da matriz que vai
+		 * remover recebe nulo, que significa a remoção da peça da matiz
+		 * em seguida retorna a variavel auxiliar */
+		Piece aux = piece(position);
+		aux.position = null;
+		pieces[position.getRow()][position.getColumn()] = null;
+		return aux;
+	}
+	
 	private boolean positionExists(int row, int column)
 	{
 		/*Nesse metodo vamos testar se uma determinada posição existe. 

@@ -3,7 +3,7 @@ package chess;
 import boardgame.Board;
 import boardgame.Piece;
 //Classe que representa uma caracteristica de uma peça
-public class ChessPiece extends Piece 
+public abstract class ChessPiece extends Piece 
 {
 	private Color color; //A peça tem que ter uma cor
 	

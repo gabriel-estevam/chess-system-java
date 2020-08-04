@@ -18,7 +18,6 @@ public class ChessMatch
 		initialSetup();
 	}
 
-	
 	public ChessPiece[][] getPieces() 
 	{
 		ChessPiece[][] mat = new ChessPiece[board.getRows()][board.getColumns()];
@@ -41,7 +40,7 @@ public class ChessMatch
 		Position target = targetPosition.toPosition();
 		
 		validateSourcePosition(source); //Validação da posição de origem
-		
+		validateTargerPosition(source,target);
 		Piece capturedPiece = makeMove(source, target);
 		return (ChessPiece)capturedPiece;
 	}
@@ -73,6 +72,15 @@ public class ChessMatch
 		}
 	}
 	
+	private void validateTargerPosition(Position source, Position target) 
+	{
+		/*Caso a posição de origem em relação a de destino não seja uma movimento valido para uma 
+		 * determinada peça não vai funcionar*/
+		if(!board.piece(source).possibleMove(target)) 
+		{
+			throw new ChessException("The chosen piece can't move to targe position");
+		}
+	}
 	private void placeNewPiece(char column, int row, ChessPiece piece)
 	{
 		//Aqui temos uma operação de inserção de uma nova peça de xadrez no tabuleiro

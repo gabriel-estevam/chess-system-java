@@ -67,35 +67,61 @@ public class UI
 
 			for (int j=0; j<pieces.length; j++) 
 			{
-
-				printPiece(pieces[i][j]);
+				printPiece(pieces[i][j],false);
 			}
-			
 			System.out.println();
 		}
 
 		System.out.println("  a b c d e f g h");
-
 	}
+	
+	public static void printBoard(ChessPiece[][] pieces, boolean[][] possibleMoves) 
+	{
+	/*Aqui fizemos uma sobrecarga do metodo de impressão,
+	 *o intuito desse metodo é mostrar na tela os movimentos possiveis para uma determinada peça 
+	 *Marcando aonde os possiveis movimentos que uma peça pode fazer 
+	 *Agora essa função recebe como parametro uma matriz boolean*/
+		for (int i=0; i<pieces.length; i++) 
+		{
+			System.out.print((8 - i) + " ");
 
-	private static void printPiece(ChessPiece piece) 
+			for (int j=0; j<pieces.length; j++) 
+			{
+				printPiece(pieces[i][j],possibleMoves[i][j]);
+			}
+			System.out.println();
+		}
+		System.out.println("  a b c d e f g h");
+	}
+	
+	private static void printPiece(ChessPiece piece, boolean background) 
 	{
 		//Metodo auxliar para mostrar as peças no tabuleiro
 		//Tem como parametro um objeto do tipo chessPiece, em seguida ele valida a existencia de peças
 		//Essa logica desse metodo poderia ser no metodo acima, mas foi divido para não ficar muito grande
 		
-		//Pequna modificação na exibição das peças 
-	  	if (piece == null) 
+		/*Foi feito uma modificação nesse metodo, ele agora passa a ter um parametro a mais,
+		 * onde vai receber um valor booleano.
+		 * 
+		 * Caso o valor seja true, conforme o if abaixo, o background dele fica azul mostrando o
+		 * movimento possivel para peça*/
+		if(background)
+		{
+			System.out.print(ANSI_BLUE_BACKGROUND);
+		}
+		
+		//Pequna modificação na exibição das peças
+		if (piece == null) 
 	  	{
             //Caso a peça não exista mostra um traço
-	  		System.out.print("-");
+	  		System.out.print("-" + ANSI_RESET);
         }
 	  	
         else 
         {
-        	//Aqui esta a modificação, caso a peça instanciada seja a WHITE, mostra ele como branca
-        	//Caso a peça instanciada seja a BLACK, mostra a peça em amarelo, isso porque vamos executar
-        	//no terminal do git bash e esse tem o fundo preto
+        //Aqui esta a modificação, caso a peça instanciada seja a WHITE, mostra ele como branca
+        //Caso a peça instanciada seja a BLACK, mostra a peça em amarelo, isso porque vamos executar
+        //no terminal do git bash e esse tem o fundo preto
         	if (piece.getColor() == Color.WHITE) 
             {
                 System.out.print(ANSI_WHITE + piece + ANSI_RESET);

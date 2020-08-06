@@ -33,6 +33,13 @@ public class ChessMatch
 		return mat;
 	}
 	
+	public boolean[][] possibleMoves(ChessPosition sourcePosition) 
+	{
+		/*Operação que vai retornar os movimentos possiveis para uma determinada peça*/
+		Position position = sourcePosition.toPosition();
+		validateSourcePosition(position);
+		return board.piece(position).possibleMove();
+	}
 	public ChessPiece performChessMove(ChessPosition sourcePosition, ChessPosition targetPosition) 
 	{
 		//Operação para mover uma peça, nesse momento não é a o metodo de captura de peça
@@ -81,11 +88,13 @@ public class ChessMatch
 			throw new ChessException("The chosen piece can't move to targe position");
 		}
 	}
+	
 	private void placeNewPiece(char column, int row, ChessPiece piece)
 	{
 		//Aqui temos uma operação de inserção de uma nova peça de xadrez no tabuleiro
 		board.placePiece(piece, new ChessPosition(column,row).toPosition());
 	}
+	
 	private void initialSetup()
 	{
 		//Função para inicializar uma partida de xadrez

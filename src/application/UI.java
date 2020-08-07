@@ -3,6 +3,7 @@ package application;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+import chess.ChessMatch;
 import chess.ChessPiece;
 import chess.ChessPosition;
 import chess.Color;
@@ -56,16 +57,23 @@ public class UI
 		}
 		//O codigo foi envolvido em um try-catch pois caso acontece erro de entrada de dados
 	}
-	
+	public static void printMatch(ChessMatch chessMatch)
+	{
+		//Metodo para imprimir a partida
+		printBoard(chessMatch.getPieces());
+		System.out.println();
+		System.out.println("Turn: "+ chessMatch.getTurn());
+		System.out.println("Waiting player: "+ chessMatch.getCurrentPlayer());
+	}
 	public static void printBoard(ChessPiece[][] pieces) 
 	{
 		//Essa função tem como parametro uma matriz de peças to tipo ChessPiece
-		for (int i=0; i<pieces.length; i++) 
+		for (int i=0; i < pieces.length; i++) 
 		{
 
 			System.out.print((8 - i) + " ");
 
-			for (int j=0; j<pieces.length; j++) 
+			for (int j=0; j < pieces.length; j++) 
 			{
 				printPiece(pieces[i][j],false);
 			}

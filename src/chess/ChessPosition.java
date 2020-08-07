@@ -14,7 +14,6 @@ public class ChessPosition
 			//Programação defensiva
 			throw new ChessException("Error instantiating ChessPosition. Valid values are from a1 to h8.");
 		}
-		
 		this.column = column;
 		this.row = row;
 	}

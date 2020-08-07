@@ -10,14 +10,29 @@ import chess.pieces.Rook;
 public class ChessMatch 
 {
 	private Board board;
+	private int turn;
+	private Color currentPlayer;
 	
 	public ChessMatch() 
 	{
 		//Assim que instanciado ja define um tabuleiro 8x8
 		board = new Board(8, 8);
+		//Assim que iniciado começa no turno 1 e com o jogador branco
+		turn = 1;
+		currentPlayer = Color.WHITE;
 		initialSetup();
 	}
-
+	
+	//Criado dois metodos get, para retorna o turno e o jogador atual
+	public int getTurn()
+	{
+		return turn;
+	}
+	public Color getCurrentPlayer()
+	{
+		return currentPlayer;
+	}
+	
 	public ChessPiece[][] getPieces() 
 	{
 		ChessPiece[][] mat = new ChessPiece[board.getRows()][board.getColumns()];
@@ -47,11 +62,12 @@ public class ChessMatch
 		Position target = targetPosition.toPosition();
 		
 		validateSourcePosition(source); //Validação da posição de origem
-		validateTargerPosition(source,target);
-		Piece capturedPiece = makeMove(source, target);
+		validateTargerPosition(source,target); //Validação da posição de destino
+		Piece capturedPiece = makeMove(source, target); //faz o movimento da peça
+		nextTurn(); //troca de turno dos jogadores
 		return (ChessPiece)capturedPiece;
 	}
-	
+
 	private Piece makeMove(Position source, Position target)
 	{
 		//Operação para fazer um movimento de peça
@@ -65,6 +81,7 @@ public class ChessMatch
 		board.placePiece(p, target);
 		return capturedPiece;
 	}
+	
 	private void validateSourcePosition(Position position)
 	{
 		//Operação para validar uma posição de origem
@@ -73,6 +90,12 @@ public class ChessMatch
 		{
 			throw new ChessException("There is no place on source position");
 		}
+		if(currentPlayer != ( (ChessPiece)board.piece(position)).getColor() )
+		{
+			//Nesse expressão foi feito um downcasting para poder acessar o metodo getColor()
+			throw new ChessException("The chosen piece is not yours");
+		}
+		
 		if(!board.piece(position).isThereAnyPossibleMove())
 		{
 			throw new ChessException("There is no possible moves for the chosen piece");
@@ -87,6 +110,13 @@ public class ChessMatch
 		{
 			throw new ChessException("The chosen piece can't move to targe position");
 		}
+	}
+	
+	private void nextTurn()
+	{
+		//Metodo para passar o turno
+		turn++; //Incrementa siginifica que passou o turno
+		currentPlayer = (currentPlayer == Color.WHITE) ? Color.BLACK : Color.WHITE; //a pos incrementar sera a vez da proxima jogada
 	}
 	
 	private void placeNewPiece(char column, int row, ChessPiece piece)

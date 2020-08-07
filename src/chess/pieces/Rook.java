@@ -27,12 +27,12 @@ public class Rook extends ChessPiece
 		Position p = new Position(0,0); //Posição auxiliar
 		
 		// above Logica para mover para acima
-		p.setValues(position.getRow() -1, position.getColumn());//-1 porque para não pegar a propria linha
+		p.setValues(position.getRow() - 1, position.getColumn());//-1 porque para não pegar a propria linha
 		while(getBoard().positionExists(p) && !getBoard().thereIsAPiece(p) )
 		{
 			//Esse while vai ficar verificando se tem espaço livre para movimentar
 			mat[p.getRow()][p.getColumn()] = true; //Caso tenha espaço livre retorna true a posição, indicando que pode ser movida
-			p.setRow(p.getRow() -1); //Anda para acima (above), isto é diminui uma linha
+			p.setRow(p.getRow() - 1); //Anda para acima (above), isto é diminui uma linha
 		}
 		if(getBoard().positionExists(p) && isThereOpponetPiece(p))
 		{
@@ -41,11 +41,11 @@ public class Rook extends ChessPiece
 		}
 		
 		//left logica para mover para esquerda
-		p.setValues(position.getRow(), position.getColumn() -1);
+		p.setValues(position.getRow(), position.getColumn() - 1);
 		while(getBoard().positionExists(p) && !getBoard().thereIsAPiece(p) )
 		{
 			mat[p.getRow()][p.getColumn()] = true; //Livre para ser movimentada
-			p.setColumn(p.getColumn() -1 ); //A coluna anda para esquerda, isto é diminui uma coluna
+			p.setColumn(p.getColumn() - 1 ); //A coluna anda para esquerda, isto é diminui uma coluna
 		}
 		if(getBoard().positionExists(p) && isThereOpponetPiece(p))
 		{
@@ -53,7 +53,7 @@ public class Rook extends ChessPiece
 		}
 		
 		//Right Logica para andar para direita
-		p.setValues(position.getRow(), position.getColumn() +1 );
+		p.setValues(position.getRow(), position.getColumn() + 1 );
 		while(getBoard().positionExists(p) && !getBoard().thereIsAPiece(p) )
 		{
 			mat[p.getRow()][p.getColumn()] = true;
@@ -65,10 +65,11 @@ public class Rook extends ChessPiece
 		}
 		
 		//below logica para andar para abaixo
-		p.setValues(position.getRow() +1, position.getColumn());
-		while(getBoard().positionExists(p)  && !getBoard().thereIsAPiece(p) )
+		p.setValues(position.getRow() + 1, position.getColumn());
+		while(getBoard().positionExists(p) && !getBoard().thereIsAPiece(p) )
 		{
 			mat[p.getRow()][p.getColumn()] = true;
+			p.setRow(p.getRow() + 1);
 		}
 		if(getBoard().positionExists(p) && isThereOpponetPiece(p))
 		{

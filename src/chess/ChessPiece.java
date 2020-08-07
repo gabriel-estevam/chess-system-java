@@ -25,8 +25,7 @@ public abstract class ChessPiece extends Piece
 		 * Criado uma variavel auxliar p do tipo ChessPiece em ma determinada posição do tabuleiro
 		 * Essa operação so vai retorna se "p" existir e "p" seja de outra cor, isto é a cor adversaria
 		 */
-		
-		ChessPiece p = (ChessPiece) getBoard().piece(position); //Variavel auxliar que recebe uma determinada posição
+		ChessPiece p = (ChessPiece)getBoard().piece(position); //Variavel auxliar que recebe uma determinada posição
 		return p!= null && p.getColor() != color; //Retorna se a peça existir e sua cor seja diferente dela mesma
 	}
 	

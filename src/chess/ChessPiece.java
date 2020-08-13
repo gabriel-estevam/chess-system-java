@@ -19,6 +19,12 @@ public abstract class ChessPiece extends Piece
 		return color;
 	}
 	
+	public ChessPosition get()
+	{
+		//Função que retorna uma posição no tabuleiro
+		return ChessPosition.fromPosition(position);
+	}
+	
 	protected boolean isThereOpponetPiece(Position position)
 	{
 		/*Essa operação vai verificar se tem uma peça adversaria em uma determinada posição

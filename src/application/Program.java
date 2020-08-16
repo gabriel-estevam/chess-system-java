@@ -18,8 +18,9 @@ public class Program
 		ChessMatch chessMatch = new ChessMatch();
 		List<ChessPiece> captured = new ArrayList<>();
 		//Logica basica para rodar a partida
-		while(true)
+		while(!chessMatch.getCheckMate())
 		{
+			//Enquanto a partida não der cheque mate ele roda o programa
 			try 
 			{
 				UI.clearScreen();
@@ -53,8 +54,10 @@ public class Program
 			{
 				System.out.println(e.getMessage());
 				sc.nextLine();
-			}
-			
+			}	
 		}
+		//deu cheque mate
+		UI.clearScreen(); //limpa tela
+		UI.printMatch(chessMatch, captured); //e mostra a partida finalizada
 	}
 }

@@ -17,6 +17,7 @@ public class ChessMatch
 	private int turn;
 	private Color currentPlayer;
 	private boolean check;
+	private boolean checkMate;
 	
 	private List<Piece> piecesOnTheBoard = new ArrayList<>(); //Lista que sera responsavel pela contagem de peças no tabuleiro
 	private List<Piece> capturedPieces = new ArrayList<>(); //Lista que sera responsavel pela contagem de peças capturadas 
@@ -44,6 +45,11 @@ public class ChessMatch
 	public boolean getCheck()
 	{
 		return check;
+	}
+	
+	public boolean getCheckMate()
+	{
+		return checkMate;
 	}
 	
 	public ChessPiece[][] getPieces() 
@@ -79,7 +85,7 @@ public class ChessMatch
 		
 		Piece capturedPiece = makeMove(source, target); //faz o movimento da peça
 		
-		if(testCheck(currentPlayer) )
+		if( testCheck(currentPlayer) )
 		{
 			/*Caso o jogador atual ficar em check ele desfaz o movimento e lança uma excessão
 			 * pois o jogador atual não pode entrar em check*/
@@ -88,13 +94,20 @@ public class ChessMatch
 			throw new ChessException("You can't put yourself in check");
 		}
 		
-		/*Caso o jogador atual não fique em cheque, siginifica que o oponente esta em cheque
+		/*Caso o jogador atual não fique em cheque, significa que o oponente esta em cheque
 		 * dai a propriedade check recebe true*/
 		
 	    check = (testCheck( opponent( currentPlayer) ) ) ? true : false;
 	    
-		nextTurn(); //troca de turno dos jogadores
-		return (ChessPiece)capturedPiece;
+		if( testCheck( opponent(currentPlayer) ) )
+		{
+			checkMate = true;
+		}
+		else
+		{
+			nextTurn(); //troca de turno dos jogadores
+		}
+	    return (ChessPiece)capturedPiece;
 	}
 
 	private Piece makeMove(Position source, Position target)
@@ -131,7 +144,6 @@ public class ChessMatch
 			capturedPieces.remove(capturedPiece); //Remove a peça capturada da lista de peças capturadas
 			capturedPieces.add(capturedPiece); //adiciona a peça novamente a lista de peças do tabuleiro
 		}
-		
 	}
 	
 	private void validateSourcePosition(Position position)
@@ -202,8 +214,60 @@ public class ChessMatch
 			}
 		}
 		/*Caso ele não encontre nada, isto é nenhum rei gera uma excessão, siginificando algo erro no sistema*/
-		throw new IllegalStateException("There is no "+ color + " king on the board");
-		
+		throw new IllegalStateException("There is no "+ color + " king on the board"); 	
+	}
+	
+	private boolean testCheckMate(Color color)
+	{
+		/*Operação para testar se uma peça esta em cheque mate*/
+		if(!testCheck(color))
+		{
+			/*Antes de iniciar é testado se a peça na cor atual não esta em cheque, caso não esteja
+			 * retona false, indicando que não esta em cheque*/
+			return false;
+		}
+		/*Logica para testar se o rei ests em cheque
+		 * 
+		 * Primeiro foi criado uma lista que vai filtrar todas as peças do 
+		 * tabuleiro na cor pessada por parametro*/
+		List<Piece> list = piecesOnTheBoard.stream().filter(x -> ((ChessPiece)x).getColor() == color).collect(Collectors.toList());
+		for(Piece p: list)
+		{
+			/*foreach para percorrer a lista
+			 * 
+			 * Em seguida criado uma matriz que recebe um movimento 
+			 * possivel de uma peça e dentro mais dois for para percorrer essa matriz
+			 * Nisso ele vai testar se a peça atual for um movimento possivel, significa 
+			 * que o rei não esta em cheque mate, veja abaixo:
+			 * */
+			
+			boolean[][]mat = p.possibleMove(); //Matriz que recebe um movimento possivel de uma peça
+			for(int i = 0; i < board.getRows(); i++)
+			{
+				//for para percorrer linhas e colunas da matriz de movimentos possiveis
+				for(int j = 0; j < board.getColumns(); j++)
+				{
+					if(mat[i][j])
+					{
+						//if para entrar na matriz
+						Position source = ( (ChessPiece)p ).get().toPosition(); //variavel auxiliar origem (atual) que recebe a posição atual da peça
+						Position target = new Position(i,j); //Variavel auxiliar de destino de uma peça que instancia uma nova posição que é a de possivel moviemento 
+						Piece capturedPiece = makeMove(source, target);//Variavel auxliar que recebe um movimento da peça, faz o movimento para possivel posição
+						boolean testCheck = testCheck(color);//Variavel auxiliar que vai testar se ainda o rei esta em cheque
+						undoMove(source, target, capturedPiece);//Em seguida desfaz o movimento feito, pois trata-se de apenas um teste
+						if(!testCheck)
+						{
+							//Caso o rei não esta em cheque, significa que o movimento da peça não deixou o em rei em cheque
+							//retorna false indicando que não esta em cheque
+							return false;
+						}
+					}
+				}
+			}
+		}
+		/*Caso a peça esteja em cheque mate retona true, siginifica que esta em cheque mate a peça,
+		 * isto é se acobou o for e nada da peça ter uma movimento possivel*/
+		return true;
 	}
 	
 	private boolean testCheck(Color color)
@@ -233,8 +297,8 @@ public class ChessMatch
 				return true;
 			}
 		}
-		return false;
 		
+		return false;
 	}
 	
 	private void initialSetup()
@@ -251,18 +315,11 @@ public class ChessMatch
 		 * instanciar uma peça de xadrez e instanciar uma posição ja informando o local sem usar as coordenadas do tabuleiro
 		 * errado não esta, poderia ser tambem*/
 		
-		placeNewPiece('c', 1, new Rook(board, Color.WHITE));
-        placeNewPiece('c', 2, new Rook(board, Color.WHITE));
-        placeNewPiece('d', 2, new Rook(board, Color.WHITE));
-        placeNewPiece('e', 2, new Rook(board, Color.WHITE));
-        placeNewPiece('e', 1, new Rook(board, Color.WHITE));
-        placeNewPiece('d', 1, new King(board, Color.WHITE));
+		 placeNewPiece('h', 7, new Rook(board, Color.WHITE));
+	     placeNewPiece('d', 1, new Rook(board, Color.WHITE));
+	     placeNewPiece('e', 1, new King(board, Color.WHITE));
 
-        placeNewPiece('c', 7, new Rook(board, Color.BLACK));
-        placeNewPiece('c', 8, new Rook(board, Color.BLACK));
-        placeNewPiece('d', 7, new Rook(board, Color.BLACK));
-        placeNewPiece('e', 7, new Rook(board, Color.BLACK));
-        placeNewPiece('e', 8, new Rook(board, Color.BLACK));
-        placeNewPiece('d', 8, new King(board, Color.BLACK));
+	     placeNewPiece('b', 8, new Rook(board, Color.BLACK));
+	     placeNewPiece('a', 8, new King(board, Color.BLACK));
 	}
 }

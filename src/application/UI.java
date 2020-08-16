@@ -69,10 +69,22 @@ public class UI
 		printCapturedPieces(captured);
 		System.out.println();
 		System.out.println("Turn: "+ chessMatch.getTurn());
-		System.out.println("Waiting player: "+ chessMatch.getCurrentPlayer());
-		if(chessMatch.getCheck() )
+		//if para testar se deu cheque mate ou não 
+		if(!chessMatch.getCheckMate())
 		{
-			System.out.println("CHECK!");
+			//Caso não deu cheque mate continua
+			System.out.println("Waiting player: "+ chessMatch.getCurrentPlayer());
+			if(chessMatch.getCheck() )
+			{
+				//Esse if testa se a peça esta em cheque, mostra a menssagem abaixo
+				System.out.println("CHECK!");
+			}
+		}
+		else
+		{
+			//Deu chequemate, mostra messagem e o vencedor da partida
+			System.out.println("CHECKMATE!");
+			System.out.println("Winner: "+ chessMatch.getCurrentPlayer() );
 		}
 	}
 	

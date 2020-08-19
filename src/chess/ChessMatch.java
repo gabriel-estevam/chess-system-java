@@ -115,9 +115,12 @@ public class ChessMatch
 		//Operação para fazer um movimento de peça
 		/*Para fazer o movimento de uma peça ela antes de mudar de lugar de que sair da sua origem
 		  Que é o que acontece com a linha abaixo*/
-		Piece p = board.removePiece(source); //Remove a peça de origem
+		ChessPiece p = (ChessPiece) board.removePiece(source); //Remove a peça de origem
 		/*Em seguida, caso tenha uma peça na posição de destino, ele remove essa peça tambem, que é o
 		 * que acontece com a linha abaixo*/
+		
+		p.increaseMoveCount();
+		
 		Piece capturedPiece = board.removePiece(target); //Remove a peça que estiver na posição de origem
 		/*Por fim a peça de origem chega na de destino*/
 		board.placePiece(p, target);
@@ -134,7 +137,10 @@ public class ChessMatch
 	{
 		//Operação para desfazer o movimento de uma peça
 		
-		Piece p = board.removePiece(target); //Criado uma peça que ja esta removendo a peça de destino
+		ChessPiece p = (ChessPiece)board.removePiece(target); //Criado uma peça que ja esta removendo a peça de destino
+		
+		p.decreaseMoveCount();
+		
 		board.placePiece(p, source); //Volta para a posição de origem
 		
 		if(capturedPiece != null)

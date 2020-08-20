@@ -17,16 +17,23 @@ public class Pawn  extends ChessPiece
 	@Override
 	public boolean[][] possibleMove() 
 	{
-		/*Implementando os movimentos possiveis para o peção*/
+		/*Implementando os movimentos possiveis para o peção
+		 * o peão inicialmente pode mover duas casas para frente
+		 * apos isso ele pode mover para diagonais esquerda ou direita ou uma casa a frente
+		 * */
 		boolean[][] mat = new boolean[getBoard().getRows()][getBoard().getColumns()];
 		
 		Position p = new Position(0,0);
 		/*O primeiro if abaixo testa se a peça é um peão branco, caso seja ele so podera
-		 * apenas movimentar para cima no tabuleiro*/
+		 * apenas movimentar para cima no tabuleiro
+		 * 
+		 * Essa primeira logica o peção move apenas duas casas para frente
+		 * 
+		 * */
 		if(getColor() == Color.WHITE)
 		{
 			
-			p.setValues(position.getRow() -1, position.getColumn()); //passa o movimento para acima
+			p.setValues(position.getRow() -1, position.getColumn()); //passa o movimento para acima (pra frente)
 			
 			if( getBoard().positionExists(p) && !getBoard().thereIsAPiece(p) )
 			{
@@ -35,6 +42,7 @@ public class Pawn  extends ChessPiece
 			}
 			
 			p.setValues(position.getRow() -2, position.getColumn()); //o peão move duas casas para frente
+			
 			Position p2 = new Position( position.getRow() - 1, position.getColumn() );
 			if( getBoard().positionExists(p) && !getBoard().thereIsAPiece(p) && getBoard().positionExists(p2) && !getBoard().thereIsAPiece(p2) && getMoveCount() == 0)
 			{
